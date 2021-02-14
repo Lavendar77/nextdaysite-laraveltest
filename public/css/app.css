@@ -427,6 +427,10 @@ img.thumb {
     height: 50px;
 }
 
+.table {
+    width: 750px;
+}
+
 .table thead {
     font-weight: bold;
 }

@@ -15,8 +15,9 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <td width="80%"></td>
-                            <td title="Impressions (Views)">👁</td>
+                            <td width="60%"></td>
+                            <td width="15%">Display Times</td>
+                            <td width="10%">Impressions</td>
                             <td colspan="2"></td>
                         </tr>
                     </thead>
@@ -34,6 +35,9 @@
                                         {{ $advert->getFirstMedia()->name }}
                                     </span>
                                 </div>
+                            </td>
+                            <td>
+                                {{ $advert->display_times }}
                             </td>
                             <td>
                                 {{ $advert->impressions }}
