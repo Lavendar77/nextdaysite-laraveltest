@@ -3,6 +3,7 @@
 use App\Http\Controllers\ExcelUploadSystemController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,11 @@ Route::get('/', function () {
 
 Route::get('/export-users', [UsersController::class, 'exportUsers'])->name('exportUsers');
 Route::post('/upload-users', [UsersController::class, 'importUsers'])->name('uploadUsers');
+Route::get('/refresh-database', function () {
+    Artisan::call('migrate:fresh');
+
+    return redirect()->route('home');
+})->name('refreshDatabase');
 
 Route::prefix('excel-upload-system')->group(function () {
     Route::get('/', [ExcelUploadSystemController::class, 'index'])->name('eus.index');

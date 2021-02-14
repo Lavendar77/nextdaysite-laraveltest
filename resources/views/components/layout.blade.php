@@ -49,6 +49,9 @@
                 padding: 10px;
                 background-color: #4b9fff;
             }
+            .btn.btn-danger {
+                background-color: #f50438;
+            }
             .text-notice {
                 color: #ff5555;
             }
@@ -76,6 +79,10 @@
                             Export Users ({{ $usersCount }})
                         </a>
                     @endif
+
+                    <a href="{{ route('refreshDatabase') }}" class="btn btn-danger">
+                        Refresh Database
+                    </a>
                     </div>
                 </div>
 
