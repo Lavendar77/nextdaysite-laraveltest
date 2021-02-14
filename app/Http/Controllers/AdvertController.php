@@ -15,7 +15,7 @@ class AdvertController extends Controller
      */
     public function index()
     {
-        $adverts = Advert::latest()->paginate(2);
+        $adverts = Advert::inRandomOrder()->paginate(2);
 
         return view('advert.index', [
             'adverts' => $adverts
