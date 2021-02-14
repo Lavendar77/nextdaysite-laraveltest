@@ -34,3 +34,9 @@ Route::prefix('excel-upload-system')->group(function () {
     Route::post('/generate', [ExcelUploadSystemController::class, 'generateRandomUsers'])
         ->name('eus.generateExcelFile');
 });
+
+Route::prefix('api-search')->group(function () {
+    Route::get('/', function () {
+        return view('api-search.index');
+    })->name('as.index');
+});

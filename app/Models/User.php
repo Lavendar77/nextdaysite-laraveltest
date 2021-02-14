@@ -42,4 +42,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Scope a query to only include user's attributes of a given text.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param mixed  $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOfText($query, $text)
+    {
+        if (!$text) {
+            return;
+        }
+
+        return $query->where('first_name', 'LIKE', "%{$text}%")
+            ->orWhere('last_name', 'LIKE', "%{$text}%")
+            ->orWhere('email', 'LIKE', "%{$text}%")
+            ->orWhere('telephone', 'LIKE', "%{$text}%")
+        ;
+    }
 }
