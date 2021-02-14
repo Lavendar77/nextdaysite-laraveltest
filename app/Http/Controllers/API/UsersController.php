@@ -9,28 +9,15 @@ use Illuminate\Http\JsonResponse;
 
 class UsersController extends Controller
 {
-    private User $user;
-
     /**
-     * Dependency Injection
-     *
-     * @param User $user
-     */
-    public function __construct(User $user)
-    {
-        $this->user = $user;
-    }
-
-    /**
-     * Undocumented function
+     * Get all users or by search.
      *
      * @param Request $request
      * @return JsonResponse
      */
     public function index(Request $request)
     {
-        $users = $this->user
-            ->ofText($request->search)
+        $users = User::ofText($request->search)
             ->get();
 
         return response()->json([
