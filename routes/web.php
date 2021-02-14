@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvertController;
 use App\Http\Controllers\ExcelUploadSystemController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -34,6 +35,10 @@ Route::prefix('excel-upload-system')->group(function () {
     Route::post('/generate', [ExcelUploadSystemController::class, 'generateRandomUsers'])
         ->name('eus.generateExcelFile');
 });
+
+Route::resource('adverts', AdvertController::class)->only([
+    'index', 'show', 'store', 'destroy'
+]);
 
 Route::prefix('api-search')->group(function () {
     Route::get('/', function () {
