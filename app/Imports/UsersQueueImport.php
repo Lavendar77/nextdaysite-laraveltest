@@ -4,17 +4,26 @@ namespace App\Imports;
 
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\SkipsErrors;
-use Maatwebsite\Excel\Concerns\SkipsFailures;
+use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Concerns\SkipsOnError;
+use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Validators\Failure;
 
-class UsersQueueImport implements ToModel, WithValidation, WithHeadingRow, ShouldQueue, WithChunkReading
+class UsersQueueImport implements
+    ToModel,
+    WithValidation,
+    WithHeadingRow,
+    ShouldQueue,
+    WithChunkReading,
+    WithBatchInserts,
+    SkipsOnFailure,
+    SkipsOnError
 {
-    use SkipsFailures, SkipsErrors;
-
     /**
     * @param array $row
     *
@@ -39,11 +48,21 @@ class UsersQueueImport implements ToModel, WithValidation, WithHeadingRow, Shoul
     public function rules(): array
     {
         return [
-            '*.first_name' => 'required|string',
-            '*.last_name' => 'required|string',
-            '*.email' => 'required|email|unique:users',
-            '*.telephone' => 'required|string|unique:users'
+            'first_name' => 'required|string',
+            'last_name' => 'required|string',
+            'email' => 'required|email|unique:users',
+            'telephone' => 'required|unique:users'
         ];
+    }
+
+    /**
+     * Batch insert data into the DB.
+     *
+     * @return integer
+     */
+    public function batchSize(): int
+    {
+        return 100;
     }
 
     /**
@@ -53,6 +72,30 @@ class UsersQueueImport implements ToModel, WithValidation, WithHeadingRow, Shoul
      */
     public function chunkSize(): int
     {
-        return 500;
+        return 100;
+    }
+
+    /**
+     * Skip failures.
+     *
+     * @param Failure[] $failures
+     * @return void
+     */
+    public function onFailure(Failure ...$failures)
+    {
+        Log::error('Users import failed.', $failures);
+    }
+
+    /**
+     * Skip errors.
+     *
+     * @param \Throwable $e
+     * @return void
+     */
+    public function onError(\Throwable $e)
+    {
+        Log::error('Error occurred during users import.', [
+            'error' => $e
+        ]);
     }
 }
