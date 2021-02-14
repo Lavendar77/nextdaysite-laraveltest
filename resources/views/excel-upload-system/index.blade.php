@@ -45,7 +45,10 @@
                 <p class="text-notice">
                     Note:
                     <ul>
-                        <li>If file size is greater than 5MB, import will move to a queue.</li>
+                        <li>
+                            If file size is greater than {{ config('filesystems.max_file_size') }}KB,
+                            import will move to a queue.
+                        </li>
                         <li>Run <code>php artisan queue:listen</code> in the terminal</li>
                     </ul>
                 </p>

@@ -29,9 +29,9 @@ class UsersController extends Controller
      */
     public function importUsers(UploadUsersRequest $request)
     {
-        $fileSizeInMB = round($request->file('file')->getSize() / 1024 / 1024, 4);
+        $fileSizeInKB = round($request->file('file')->getSize() / 1024, 4);
 
-        if ($fileSizeInMB > 5) {
+        if ($fileSizeInKB > config('filesystems.max_file_size')) {
             Excel::import(new UsersQueueImport(), $request->file('file'));
 
             $request->session()->flash('status', 'Process was queued successfully!');
