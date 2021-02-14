@@ -8,14 +8,13 @@
             <h3>Phase 1</h3>
             <p>Generate an Excel File</p>
             <span class="text-sm">
-                This generates an excel file, available for download, if number is less than 100,
-                else it queues the job and sends the file.
+                This generates an excel file.
 
                 <p class="text-notice">
                     Note:
                     <ul>
-                        <li>Configure your mail server. <code>See README</code></li>
-                        <li>Run <code>php artisan queue:listen</code> in the terminal</li>
+                        <li>If attempt is to generate more than 100 users, the process is queued.</li>
+                        <li>Run <code>php artisan queue:listen</code> in the terminal.</li>
                     </ul>
                 </p>
             </span>
@@ -38,9 +37,7 @@
             <h3>Phase 2</h3>
             <p>Download & Upload Excel File</p>
             <span class="text-sm">
-                This downloads all the users on the database in an excel file.
-                <br>
-                Then, you can upload the XLSX files for users too.
+                Export users for sample data and upload (generated from phase 1).
 
                 <p class="text-notice">
                     Note:
